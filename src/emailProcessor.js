@@ -92,8 +92,23 @@ async function sendEmail(emailConfig, mailOptions){
     });
 };
 
+/**
+ * Function to process incoming emails and generate draft responses.
+ * @param {string} emailContent - The contents of the email to respond to.
+ * @returns {Promise<string>} - A promise that resolves to the generated response.
+ */
+const processEmailAndGenerateResponse = async (emailContent) => {
+    try{
+        const response = await generateResponse(emailContent); //generate a response with the email content
+        return response; //return the generated response
+    }catch (error){
+        console.error('Error processing email:', error); // Log any errors during email processing
+        throw new Error('Failed to process email and generate response'); // Throw an error if processing fails
+    }
+}
 //export the functions for use in other modules
 module.exports = {
     fetchEmails,
-    sendEmail
+    sendEmail,
+    processEmailAndGenerateResponse
 };
