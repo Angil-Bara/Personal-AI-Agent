@@ -4,7 +4,7 @@
 const nodemailer = require('nodemailer');//for sending emails via SMTP (Simple Mail Transfer Protocol)
 const Imap = require('imap');//for receiving emails via IMAP (Internet Message Access Protocol)
 const {promisify} = require('util');//to convert callback-based functions to promise-based ones
-
+const {generateResponse} = require('./responseGenerator');//import the response generator module
 
 //Function to send an email
 async function fetchEmails(emailConfig){
