@@ -13,3 +13,6 @@ To fetch emails, send a GET request to `\fetch-emails` with the user's email and
 
 ### Sending Emails
 To send emails, you can use the `sendEmail` function form the email processing module. Provide the necessary SMTP configuration and email details such as suchject, body, ect.
+
+### Generating Email Responses
+To generate a response for an email, send a POST request to `/generate-response` with the email content in the request body. This will return a draft response based on the input email content.

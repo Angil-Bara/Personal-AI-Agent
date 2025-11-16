@@ -31,7 +31,7 @@ This document outlines the architecture of Jarvis, detailing the major component
 - The Calendar Service can trigger reminders through the Life Management Service, which in turn can notify users via the Notification Service.
 
 ## Component Diagram
-![Component Diagram](commpnent_diagram.png)
+![Component Diagram](./component_diagram.png)
 
 ## Conslusion
 This architecture provides a modular approach to buildint the Personal AI Agent, allowing for scalability and maintainability as new features are added.
