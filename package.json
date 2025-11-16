@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Angil-Bara/Personal-AI-Agent/issues"
   },
-  "homepage": "https://github.com/Angil-Bara/Personal-AI-Agent#readme"
+  "homepage": "https://github.com/Angil-Bara/Personal-AI-Agent#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
