@@ -10,6 +10,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 const {registerUser, loginUser} = require('./auth');
 //import the database connection function
 const {queryDatabase} = require('./database');
+//import email processing functions
+const {fetchEmails, sendEmail} = require('./emailProcessor');
 
 //create and instance of an Express application
 const application = express();
@@ -17,6 +19,22 @@ const application = express();
 application.use(bodyParser.json());
 //Initialize the database connection
 queryDatabase();
+
+//fetch emails on startup (example usage)
+application.get('/fetch-emails', async (request, response) => {
+    const emailConfig = {
+        user: request.query.user, //get user email from request body or environment variables
+        password: request.query.password, //get user password from request body or environment variables
+        host: 'imap.[your-email-provider].com', //Replace with actual IMAP host
+        port: 993 //default IMAP port
+    };
+    try{
+        const emails = await fetchEmails(emailConfig); //fetch emails using the provided configurations
+        response.status(200).send(emails); //send the fetched emails as a response
+    }catch(error){
+        response.status(500).send({message: error.message}); //send a 500 response if there is an error fetching emails
+    }
+});
 
 //Define a basic route to test the server
 application.get('/', (request, response) => {
