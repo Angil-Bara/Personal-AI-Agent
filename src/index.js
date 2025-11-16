@@ -33,6 +33,16 @@ application.post('/register', bodyParser.json(), (request, response) => {
         response.status(400).send({message: error.message}); //send a 400 response if there is an error in registration
     }
 });
+//Route to user login
+application.post('/login', bodyParser.json(), (request, response) => {
+    const {username, password} = request.body; //extract username and password from the request body
+    try{
+        const {auth, token} = loginUser(username, password); //call the loginUser function
+        response.status(200).send({auth, token}); //send a 200 response with the auth status and token
+    }catch(error){
+        response.status(401).send({message: error.message}); //send a 401 response if there is an error in login
+    }
+});
 
 //Example of a protected route that requires authentication
 application.get('/protected', authMiddleware, (request, response) => {
