@@ -8,9 +8,15 @@ const bodyParser = require('body-parser');
 const authMiddleware = require('../middleware/authMiddleware');
 //import the authentication logic
 const {registerUser, loginUser} = require('./auth');
+//import the database connection function
+const {queryDatabase} = require('./database');
 
 //create and instance of an Express application
 const application = express();
+//Middleware to parse JSON request bodies
+application.use(bodyParser.json());
+//Initialize the database connection
+queryDatabase();
 
 //Define a basic route to test the server
 application.get('/', (request, response) => {
