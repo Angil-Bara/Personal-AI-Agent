@@ -1,6 +1,7 @@
 // Import necessary libraries/modules for JWT authentication and password hashing
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bycrypt');
+const {setCredentials} = require('./googleCalendarClient'); //import function to set Google Calendar Credentials
 
 // In-memory user store (for demonstration purposes)
 const users = [];
@@ -36,6 +37,11 @@ function loginUser(username, password){
     return {auth: true, token}; // return the token
 };
 
+// Function to authenticate and set Google Calendar credentials
+const authenticateGoogleCalendar = (token) => {
+    setCredentials(token); //set the OAuth2 credentials using the provided token
+};
+
 //Function to verify a JWT token
 function verifyToken(token){
     try{
@@ -50,5 +56,6 @@ function verifyToken(token){
 module.exports = {
     registerUser,
     loginUser,
-    verifyToken
+    verifyToken,
+    authenticateGoogleCalendar
 };
