@@ -11,7 +11,8 @@ const {registerUser, loginUser} = require('./auth');
 //import the database connection function
 const {queryDatabase} = require('./database');
 //import email processing functions
-const {fetchEmails, sendEmail} = require('./emailProcessor');
+const {fetchEmails, sendEmail, processEmailAndGenerateResponse} = require('./emailProcessor'); //modified import to include response processing
+
 
 //create and instance of an Express application
 const application = express();
@@ -65,6 +66,17 @@ application.post('/login', bodyParser.json(), (request, response) => {
 //Example of a protected route that requires authentication
 application.get('/protected', authMiddleware, (request, response) => {
     response.send(`Welcome ${request.user.username}, you are authenticated!`); //send a welcome message to the authenticated user
+});
+
+//Route to generating email responses
+application.post('/generate-response', authMiddleware, async (request, response) => {
+    const {emailContent} = request.body; //extract email content from the request body
+    try{
+        const responseText = await processEmailAndGenerateResponse(emailContent); //generate response using email processing module
+        response.status(200).send({responseText}); //send the generated response text
+    }catch (error){
+        response.status(500).send({message: 'Error generating response: ' + error.message}); //handle errors gracefully
+    }
 });
 
 //Set the port for the server to listen on
