@@ -1,3 +1,4 @@
+//Step 1
 //Entry point for the Personal AI Agent application
 
 //import the express framework
