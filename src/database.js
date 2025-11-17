@@ -16,7 +16,16 @@ const pool = new Pool({
 async function queryDatabase(){
     try{
         await pool.connect(); //Establish a connection to the database
+        
         console.log('Database connected successfully'); // Log success message
+
+        // Create subscription table if it doesn't exist
+        await pool.query('CREAT TABLE IF NOT EXISTS subscriptions(\n' +
+            'id SERIAL PRIMARY KEY,\n' +
+            'user_id INTEGER NOT NULL,\n' +
+            'status VANCHAR(50) NOT NULL,\n' +
+            'next_payment_date DATE NOT NULL,\n' +
+            'FORIEGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE\m);');
     }catch(error){
         console.error('Database connection error:', error); //Log any connection errors
         process.exit(1); //Exit the process with failure code
