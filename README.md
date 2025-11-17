@@ -16,3 +16,6 @@ To send emails, you can use the `sendEmail` function form the email processing m
 
 ### Generating Email Responses
 To generate a response for an email, send a POST request to `/generate-response` with the email content in the request body. This will return a draft response based on the input email content.
+
+### Notifications
+Notifications are for due bills, or upcoming subscription renewals are sent via email. Ensure your email configureation is set up correctly in the application.
