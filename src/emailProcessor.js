@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');//for sending emails via SMTP (Simple M
 const Imap = require('imap');//for receiving emails via IMAP (Internet Message Access Protocol)
 const {promisify} = require('util');//to convert callback-based functions to promise-based ones
 const {generateResponse} = require('./responseGenerator');//import the response generator module
+const {createEvent} = require('./calendarManager');//import the calendar manager function for scheduling events
 
 //Function to send an email
 async function fetchEmails(emailConfig){
@@ -100,6 +101,21 @@ async function sendEmail(emailConfig, mailOptions){
 const processEmailAndGenerateResponse = async (emailContent) => {
     try{
         const response = await generateResponse(emailContent); //generate a response with the email content
+        // Check for scheduling requests in the email content
+        if(emailContent.includes('schedule') || emailContent.includes('event')){
+            const eventData = {
+                summary: 'Scheduled Event', //Default event summary
+                start: {
+                    dateTime: new Date().toISOString(), //Set start time
+                    timeZone: 'America/New_York'//Set time zone
+                },
+                end: {
+                    dateTime: new Date(Date.now() + 3600000).toISOString(), //Set end time 1 hour later
+                    timeZone: 'America/New_York' //Set time zone
+                }
+            };
+            await createEvent(eventData); //Schedule the event in the calendar
+        }
         return response; //return the generated response
     }catch (error){
         console.error('Error processing email:', error); // Log any errors during email processing
