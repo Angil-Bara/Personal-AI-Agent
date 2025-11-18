@@ -12,6 +12,10 @@ const {registerUser, loginUser} = require('./auth');
 const {queryDatabase} = require('./database');
 //import email processing functions
 const {fetchEmails, sendEmail, processEmailAndGenerateResponse} = require('./emailProcessor'); //modified import to include response processing
+//import React and ReactDOM for rendering the UI
+const React = require('react');
+const ReactDOM = require('react-dom');
+const App = require('./App');
 
 
 //create and instance of an Express application
@@ -86,3 +90,7 @@ const PORT = process.env.PORT || 3000;
 application.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`); //logs the server URL when it starts
 });
+
+//Render the React application
+//Render the App component in the root div in index.html
+ReactDOM.render(<App/>, document.getElementById('root')) 
