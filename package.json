@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Angil-Bara/Personal-AI-Agent#readme",
   "dependencies": {
+    "cypress": "^15.6.0",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jest": "^30.2.0"
   }
 }
