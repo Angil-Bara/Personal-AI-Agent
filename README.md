@@ -19,3 +19,7 @@ To generate a response for an email, send a POST request to `/generate-response`
 
 ### Notifications
 Notifications are for due bills, or upcoming subscription renewals are sent via email. Ensure your email configureation is set up correctly in the application.
+
+### Setting Up CI/CD
+1. **Workflow File**: The CI/CD pipeline is defined in the `.github/workflows/ci.yml` file. This file specifies the steps to check out th code, set up the Node.js environment, install dependencies, run tests, and deploy the application.
+2. **Monitoring the pipeline**: After puching changes to the `main` branch, you can monitor the pipeline's status by navigating to the 'Actions' tab in your Github repository. Here, you can see the progress of each job and view logs for debugging if necessary.
