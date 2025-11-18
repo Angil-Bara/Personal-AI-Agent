@@ -17,6 +17,10 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const App = require('./App');
 
+//import dotenv for private information
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 //create and instance of an Express application
 const application = express();
@@ -27,11 +31,11 @@ queryDatabase();
 
 //fetch emails on startup (example usage)
 application.get('/fetch-emails', async (request, response) => {
-    const emailConfig = {
-        user: request.query.user, //get user email from request body or environment variables
-        password: request.query.password, //get user password from request body or environment variables
-        host: 'imap.[your-email-provider].com', //Replace with actual IMAP host
-        port: 993 //default IMAP port
+    const emailConfig = { // you can add more configurations if you use more than 1 email
+        user: process.env.IMAP_USER, //get user email from request body or environment variables
+        password: process.env.IMAP_PASS, //get user password from request body or environment variables
+        host: process.env.IMAP_HOST, //Replace with actual IMAP host
+        port: process.env.IMAP_PORT //default IMAP port is 993
     };
     try{
         const emails = await fetchEmails(emailConfig); //fetch emails using the provided configurations
