@@ -17,5 +17,14 @@ const LifeAdminPanel = () => {
         }
     };
 
-    //Function to hande sub
+    //Function to hande subscription management
+    const handleManageSubscription = async (subscriptionId) => {
+        try{
+            const subscription = await manageSubscription(subscriptionId); // Call manageSubscription function
+            alert(`Subscription details: ${JSON.stringify(subscription)}`); // Show subscription detatils
+        }catch (error){
+            console.error('Error managing subscription:', error); // log any errors
+            alert('Failed to manage subscription'); // Notify the user of failure
+        }
+    };
 };
