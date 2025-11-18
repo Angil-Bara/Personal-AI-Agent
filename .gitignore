@@ -1,2 +1,4 @@
 node_modudles/
 .env
+.env.local
+*.env

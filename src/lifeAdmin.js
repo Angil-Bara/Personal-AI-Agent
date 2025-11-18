@@ -4,6 +4,9 @@
 const axios = require('axios'); // for making HTTP requests
 const {pool} = require('./database'); // import the database connection pool
 const {sendEmail} = require('./emailProcessor'); // import the function to send emails
+import dotenv from 'dotenv'; // for keeping your tokens/API_KEY private
+
+dotenv.config();
 
 /**
  * Life Administration Module
@@ -12,13 +15,19 @@ const {sendEmail} = require('./emailProcessor'); // import the function to send 
 
 /**
  * Function to pay a bill using the payment API.
- * @param {Object} paymentDetails - The details required to process the payment.
+ * @param {Object} orderDetails - The details required to process the payment.
  * @returns {Promise<Object>} - A response from the payment API.
  */
-const payBill = async (paymentDetails) => {
+const payBill = async (orderDetails) => {
     try{
         // Make a POST request to the payment API (e.g., Stripe, Paypal)
-        const response = await axios.post('https://api.paymentprovider.com/pay', paymentDetails);
+        const response = await axios.post(
+            process.env.PAYMENT_API_URL,
+            orderDetails,
+            {
+                headers:{Authorization: `Bearer ${process.env.PAYMENT_API_KEY}`}        
+            }
+        );
         return response.data; // Return the response from the payment provider
     }catch (error){
         console.error('Error processing payment:', error); // Log any errors that occur during payment processing
