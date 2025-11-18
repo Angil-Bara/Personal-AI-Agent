@@ -27,4 +27,16 @@ const LifeAdminPanel = () => {
             alert('Failed to manage subscription'); // Notify the user of failure
         }
     };
+
+    //Render the life admin panel
+    return(
+        <div>
+            <h1>Life Admin Panel</h1>
+            <button onClick={handlePayBill}>Pay Bill</button> {/*Button to pay bill*/}
+            <button onClick={handleManageSubscription}>Manage Subscription</button> {/*Button to mangae subscription*/}
+        </div>
+    );
 };
+
+//Export the LifeAdminPanel component
+export default LifeAdminPanel;
