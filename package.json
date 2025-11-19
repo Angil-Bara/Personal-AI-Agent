@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "description": "A personal AI agent for life, email, and calendar management",
   "main": "index.js",
-  "scripts": {
+    "scripts": {
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "jest",
-    "test:e2e": "cypress run"
+    "test:e2e": "cypress run",
+    "test:e2e:headed": "cypress open",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "jest": {
     "testEnvironment": "node",
