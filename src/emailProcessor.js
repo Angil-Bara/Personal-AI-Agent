@@ -6,6 +6,7 @@ const Imap = require('imap');//for receiving emails via IMAP (Internet Message A
 const {promisify} = require('util');//to convert callback-based functions to promise-based ones
 const {generateResponse} = require('./responseGenerator');//import the response generator module
 const {createEvent} = require('./calendarManager');//import the calendar manager function for scheduling events
+const {encrypt, decrypt} = require('./security')
 
 //In-memory cache to store prossed email responses
 const emailResponseCache = {}; //cache object to store responses
@@ -109,23 +110,11 @@ const processEmailAndGenerateResponse = async (emailContent) => {
     }
     try{
         const response = await generateResponse(emailContent); //generate a response with the email content
-        // Check for scheduling requests in the email content
-        if(emailContent.includes('schedule') || emailContent.includes('event')){
-            const eventData = {
-                summary: 'Scheduled Event', //Default event summary
-                start: {
-                    dateTime: new Date().toISOString(), //Set start time
-                    timeZone: 'America/New_York'//Set time zone
-                },
-                end: {
-                    dateTime: new Date(Date.now() + 3600000).toISOString(), //Set end time 1 hour later
-                    timeZone: 'America/New_York' //Set time zone
-                }
-            };
-            await createEvent(eventData); //Schedule the event in the calendar
-        }
-        emailResponseCache[emailContent] = response; //Cache generated response
-        return response; //return the generated response
+        // Encrypt the response before returning it
+        const encryptedResponse = encrypt(response);
+        emailResponseCache[emailContent] = encryptedResponse;
+        return encryptedResponse;
+
     }catch (error){
         console.error('Error processing email:', error); // Log any errors during email processing
         throw new Error('Failed to process email and generate response'); // Throw an error if processing fails
