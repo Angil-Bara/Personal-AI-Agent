@@ -2,45 +2,50 @@
 // src/__tests__/emailProcessor.test.js
 
 const {processEmailAndGenerateResponse} = require('../emailProcessor');
+const {generateResponse} = require('../responseGenerator');
+const {createEvent} = require('../calendarManager');
 
-// Mock the response generator
-jest.mock('../responseGenerator', () => ({
-    generateResponse: jest.fn().mockResolvedValue('Generated response for your inquiry')
-}));
-
-// Mock the calendar manager
-jest.mock('../calendarManager', () => ({
-    createEvent: jest.fn().mockResolvedValue({ 
-        id: 'event-123',
-        summary: 'Scheduled Event'
-    })
-}));
+// Mock the dependencies BEFORE requiring the module
+jest.mock('../responseGenerator');
+jest.mock('../calendarManager');
 
 describe('Email processing', () => {
     beforeEach(() => {
+        // Clear all mocks before each test
         jest.clearAllMocks();
+        
+        // Reset the email cache by clearing the module
+        jest.resetModules();
+        
+        // Set up default mock implementations
+        generateResponse.mockResolvedValue('Generated response for your inquiry');
+        createEvent.mockResolvedValue({ 
+            id: 'event-123',
+            summary: 'Scheduled Event'
+        });
     });
 
     test('should generate a response from email content', async () => {
         const response = await processEmailAndGenerateResponse('Hello, I would like to schedule a meeting.');
         
-        // The response comes from the mocked generateResponse, not from event summary
         expect(response).toBeDefined();
         expect(typeof response).toBe('string');
         expect(response).toBe('Generated response for your inquiry');
         
+        // Verify that generateResponse was called with the email content
+        expect(generateResponse).toHaveBeenCalledWith('Hello, I would like to schedule a meeting.');
+        
         // Verify that createEvent was called since email contains 'schedule'
-        const {createEvent} = require('../calendarManager');
         expect(createEvent).toHaveBeenCalled();
     });
 
     test('should throw an error for invalid email content', async () => {
-        const {generateResponse} = require('../responseGenerator');
-        
-        // Mock generateResponse to throw error for empty content
+        // Mock generateResponse to throw error for this test
         generateResponse.mockRejectedValueOnce(new Error('Invalid input'));
         
-        await expect(processEmailAndGenerateResponse('')).rejects.toThrow('Failed to process email and generate response');
+        await expect(processEmailAndGenerateResponse(''))
+            .rejects
+            .toThrow('Failed to process email and generate response');
     });
 
     test('should cache responses for duplicate emails', async () => {
@@ -52,7 +57,6 @@ describe('Email processing', () => {
         expect(firstResponse).toBe(secondResponse);
         
         // generateResponse should only be called once due to caching
-        const {generateResponse} = require('../responseGenerator');
         expect(generateResponse).toHaveBeenCalledTimes(1);
     });
 
@@ -61,7 +65,6 @@ describe('Email processing', () => {
         
         await processEmailAndGenerateResponse(emailContent);
         
-        const {createEvent} = require('../calendarManager');
         expect(createEvent).toHaveBeenCalledWith(
             expect.objectContaining({
                 summary: 'Scheduled Event',
@@ -80,7 +83,6 @@ describe('Email processing', () => {
         
         await processEmailAndGenerateResponse(emailContent);
         
-        const {createEvent} = require('../calendarManager');
         expect(createEvent).not.toHaveBeenCalled();
     });
 });
