@@ -4,7 +4,7 @@
 const {createEvent, getEvents} = require('../calendarManager');
 
 // Mocking Google Calendar API calls for testing
-jest.mock('googlapis', () => ({
+jest.mock('googleapis', () => ({
     google: {
         calendar: jest.fn().mockReturnValue({
             events: {

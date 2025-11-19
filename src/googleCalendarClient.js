@@ -2,7 +2,7 @@
 
 //Import the necessary libraries for Google Calendar API
 const {google} = require('googleapis');
-const {OAuth2} = google.OAuth2;
+const OAuth2 = google.auth.OAuth2;
 
 //Create a new OAuth2 client instance with your credentials
 const oauth2Client = new OAuth2(
