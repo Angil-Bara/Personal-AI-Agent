@@ -5,6 +5,11 @@ const {processEmailAndGenerateResponse} = require('../emailProcessor');
 const {generateResponse} = require('../responseGenerator');
 const {createEvent} = require('../calendarManager');
 
+
+// Mock @xenova/transformers FIRST before any imports
+jest.mock('@xenova/transformers', () => ({
+    pipeline: jest.fn()
+}));
 // Mock the dependencies BEFORE requiring the module
 jest.mock('../responseGenerator');
 jest.mock('../calendarManager');

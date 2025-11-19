@@ -12,17 +12,19 @@
     "dev": "nodemon index.js",
     "deploy": "echo '✅ Tests passed - Build ready for deployment'"
   },
-  "jest": {
+ "jest": {
     "testEnvironment": "node",
     "testMatch": ["**/src/__tests__/**/*.test.js"],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/cypress/"
     ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/cypress/"
-    ]
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@xenova)/)"
+    ],
+    "moduleNameMapper": {
+      "^@xenova/transformers$": "<rootDir>/src/__mocks__/@xenova/transformers.js"
+    }
   },
   "repository": {
     "type": "git",
