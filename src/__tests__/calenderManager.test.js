@@ -6,12 +6,30 @@ const {createEvent, getEvents} = require('../calendarManager');
 // Mocking Google Calendar API calls for testing
 jest.mock('googleapis', () => ({
     google: {
-        calendar: jest.fn().mockReturnValue({
+        calendar: jest.fn(() => ({
             events: {
-                list: jest.fn(),
-                insert: jest.fn()  
+                list: jest.fn().mockResolvedValue({
+                    data: {
+                        items: [
+                            {
+                                id: 'test-event-1',
+                                summary: 'Test Event',
+                                start: { dateTime: '2025-11-18T09:00:00Z' },
+                                end: { dateTime: '2025-11-18T10:00:00Z' }
+                            }
+                        ]
+                    }
+                }),
+                insert: jest.fn().mockResolvedValue({
+                    data: {
+                        id: 'new-event-id',
+                        summary: 'Test Event',
+                        start: { dateTime: '2025-11-18T09:00:00Z' },
+                        end: { dateTime: '2025-11-18T10:00:00Z' }
+                    }
+                })
             }
-        })
+        }))
     }
 }));
 

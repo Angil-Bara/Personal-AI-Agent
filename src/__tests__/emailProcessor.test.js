@@ -3,6 +3,14 @@
 //Import the functions to be tested from the emailProcessor module
 const {processEmailAndGenerateResponse} = require('../emailProcessor');
 
+// Mock dependencies
+jest.mock('../responseGenerator', () => ({
+    generateResponse: jest.fn().mockResolvedValue('Generated response for scheduled event')
+}));
+
+jest.mock('../calendarManager', () => ({
+    createEvent: jest.fn().mockResolvedValue({ id: 'event-123' })
+}));
 //Unit tests for email processing
 describe('Email processing', () => {
     test('should generate a response from email content', async () => {

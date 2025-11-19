@@ -1,31 +1,43 @@
 // src/__test__/auth.test.js
 
 //Import the functions to be tested from the suth module
-const{registerUser, loginUser} = require('../auth');
+const {registerUser, loginUser} = require('../auth');
 
-//Unit tests for user registration
-describe('User Registeration', () => {
+//Unit tests for registerUser
+describe('User Registration', () => {
+    // Clear users before each test
+    beforeEach(() => {
+        const {users} = require('../auth');
+        users.length = 0;
+    });
+
     test('should register a new user', () => {
-        const user = registerUser('testuser', 'password123'); // Attempt to register a user
-        expect(user).toEqual({username: 'testuser'}); // Expect the returned user object to match
+        const result = registerUser('testuser', 'password123');
+        expect(result).toEqual({message: 'User registered successfully'});
     });
 
     test('should throw error for existing user', () => {
-        registerUser('testuser', 'password123'); // Register the user first
-        expect(() => registerUser('testuser', 'password123').toThrow('User already exists')); // Expect error on duplicated registeration
+        registerUser('testuser', 'password123');
+        expect(() => registerUser('testuser', 'password123')).toThrow('User already exists');
     });
 });
 
-//Unit tests for user login
-describe('User log in', () => {
-    test('should log in a registered user', () => {
-        registerUser('testuser', 'password123'); // Ensure that the user is registered
-        const response = loginUser('testuser', 'password123'); // Log in the user
-        expect(response).toHaveProperty('auth', true); // Expect a successful login
-        expect(response).toHaveProperty('token'); // Expect a token to be returned
+//Unit tests for loginUser
+describe('User Login', () => {
+    beforeEach(() => {
+        const {users} = require('../auth');
+        users.length = 0;
     });
+
+    test('should log in a registered user', () => {
+        registerUser('testuser', 'password123');
+        const response = loginUser('testuser', 'password123');
+        expect(response).toHaveProperty('auth', true);
+        expect(response).toHaveProperty('token');
+    });
+
     test('should throw an error for invalid password', () => {
-        registerUser('testuser', 'password123'); // Resgister the user first
-        expect(() => loginUser('testuser', 'password123').toThrow('Invalid password')); // Expect error on wrong password
+        registerUser('testuser', 'password123');
+        expect(() => loginUser('testuser', 'wrongpassword')).toThrow('Invalid password');
     });
 });

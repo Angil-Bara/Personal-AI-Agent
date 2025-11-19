@@ -33,7 +33,7 @@ function loginUser(username, password){
         throw new Error('Invalid password'); //throw error if password is incorrect
     }
     //generate a JWT token for the user
-    const token = jwt.sign({username: user.username}, 'sercret-key', {expiresIn: '1h'});//generate a token valid for 1 hour
+    const token = jwt.sign({username: user.username}, 'secret-key', {expiresIn: '1h'});//generate a token valid for 1 hour
     return {auth: true, token}; // return the token
 };
 
@@ -45,8 +45,8 @@ const authenticateGoogleCalendar = (token) => {
 //Function to verify a JWT token
 function verifyToken(token){
     try{
-        const token = jwt.verify(token, 'secret-key'); //use the sam secret key to verify the token
-        return token; //return the decoded token if valid
+        const decoded = jwt.verify(token, 'secret-key'); //use the sam secret key to verify the token
+        return decoded; //return the decoded token if valid
     }catch(error){
         throw new Error('Invalid token');//throw erroe if the token is invalid
     }
@@ -57,5 +57,6 @@ module.exports = {
     registerUser,
     loginUser,
     verifyToken,
-    authenticateGoogleCalendar
+    authenticateGoogleCalendar,
+    users // Export for testing
 };

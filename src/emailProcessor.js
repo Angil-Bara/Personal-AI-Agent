@@ -78,7 +78,7 @@ async function fetchEmails(emailConfig){
 async function sendEmail(emailConfig, mailOptions){
     //create a transporter object using SMTP
     const transporter = nodemailer.createTransport({
-        hose: emailConfig.host,
+        host: emailConfig.host,
         port: emailConfig.port || 587,
         secure: emailConfig.secure || false, //true for 465, false for other ports
         auth: {

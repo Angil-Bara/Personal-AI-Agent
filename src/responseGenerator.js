@@ -1,7 +1,7 @@
 // src/responseGenerator.js
 
 //Import necessary libraries for Natural Language Processing (NLP)
-const {pipeline} = require('transformers'); //import the Hugging Face Transformers library
+const {pipeline} = require('@xenova/transformers'); //import the Hugging Face Transformers library
 
 //Initialize the text generation model using Hugging Face's pipeline
 const textGenerator = pipeline('text-generation', 'gpt2'); // Using the GPT-2 model for generating responses

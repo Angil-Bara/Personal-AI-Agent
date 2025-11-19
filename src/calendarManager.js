@@ -14,7 +14,7 @@
     try{
         // Make a POST request to the Google Calendar API to create the event
         const response = await calendar.events.insert({
-            calendarID: 'primary', // Use the primary calendar
+            calendarId: 'primary', // Use the primary calendar
             resource: eventData // Event data to be inserted
         });
         return response.data; // Return the created event data
@@ -56,7 +56,7 @@
     try{
         //Make a DELETE request to the Google Calendar API to delete the event
         await calendar.events.delete({
-            caldendarID: 'primary', //Use the primary calendar
+            caldendarId: 'primary', //Use the primary calendar
             eventId: eventId //ID of the event to delete
         });
     }catch (error){
