@@ -6,13 +6,24 @@ const {generateResponse} = require('../responseGenerator');
 const {createEvent} = require('../calendarManager');
 
 
-// Mock @xenova/transformers FIRST before any imports
+// Mock @xenova/transformers with inline implementation
 jest.mock('@xenova/transformers', () => ({
-    pipeline: jest.fn()
+    pipeline: jest.fn(() => 
+        jest.fn().mockResolvedValue([{
+            generated_text: 'Mocked AI response'
+        }])
+    )
 }));
-// Mock the dependencies BEFORE requiring the module
-jest.mock('../responseGenerator');
-jest.mock('../calendarManager');
+
+// Mock other dependencies with inline implementations
+jest.mock('../responseGenerator', () => ({
+    generateResponse: jest.fn()
+}));
+
+jest.mock('../calendarManager', () => ({
+    createEvent: jest.fn()
+}));
+
 
 describe('Email processing', () => {
     beforeEach(() => {

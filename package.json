@@ -21,10 +21,7 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(@xenova)/)"
-    ],
-    "moduleNameMapper": {
-      "^@xenova/transformers$": "<rootDir>/src/__mocks__/@xenova/transformers.js"
-    }
+    ]
   },
   "repository": {
     "type": "git",
