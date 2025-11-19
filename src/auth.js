@@ -1,6 +1,6 @@
 // Import necessary libraries/modules for JWT authentication and password hashing
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bycrypt');
+const bcrypt = require('bcrypt');
 const {setCredentials} = require('./googleCalendarClient'); //import function to set Google Calendar Credentials
 
 // In-memory user store (for demonstration purposes)

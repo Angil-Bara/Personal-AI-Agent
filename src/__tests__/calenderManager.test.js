@@ -8,8 +8,8 @@ jest.mock('googlapis', () => ({
     google: {
         calendar: jest.fn().mockReturnValue({
             events: {
-                insert: jest.fn(),
-                list: jest.fn()
+                list: jest.fn(),
+                insert: jest.fn()  
             }
         })
     }
