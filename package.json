@@ -8,6 +8,18 @@
     "test:unit": "jest",
     "test:e2e": "cypress run"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/src/__tests__/**/*.test.js"],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/cypress/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/cypress/"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Angil-Bara/Personal-AI-Agent.git"
