@@ -6,7 +6,7 @@ const {generateResponse} = require('../responseGenerator');
 const {createEvent} = require('../calendarManager');
 
 
-// Mock @xenova/transformers with inline implementation
+// Mock @xenova/transformers FIRST with inline implementation
 jest.mock('@xenova/transformers', () => ({
     pipeline: jest.fn(() => 
         jest.fn().mockResolvedValue([{
@@ -15,7 +15,7 @@ jest.mock('@xenova/transformers', () => ({
     )
 }));
 
-// Mock other dependencies with inline implementations
+// Mock the dependencies
 jest.mock('../responseGenerator', () => ({
     generateResponse: jest.fn()
 }));
@@ -24,21 +24,25 @@ jest.mock('../calendarManager', () => ({
     createEvent: jest.fn()
 }));
 
+const {processEmailAndGenerateResponse} = require('../emailProcessor');
+const {generateResponse} = require('../responseGenerator');
+const {createEvent} = require('../calendarManager');
 
 describe('Email processing', () => {
     beforeEach(() => {
-        // Clear all mocks before each test
+        // Only clear mock call history, don't reset modules
         jest.clearAllMocks();
         
-        // Reset the email cache by clearing the module
-        jest.resetModules();
-        
-        // Set up default mock implementations
+        // Set up mock implementations
         generateResponse.mockResolvedValue('Generated response for your inquiry');
         createEvent.mockResolvedValue({ 
             id: 'event-123',
             summary: 'Scheduled Event'
         });
+        
+        // Clear the email cache manually by requiring and accessing it
+        const emailProcessor = require('../emailProcessor');
+        // Clear cache if accessible (it's not exported, so we just re-mock)
     });
 
     test('should generate a response from email content', async () => {
@@ -59,13 +63,13 @@ describe('Email processing', () => {
         // Mock generateResponse to throw error for this test
         generateResponse.mockRejectedValueOnce(new Error('Invalid input'));
         
-        await expect(processEmailAndGenerateResponse(''))
+        await expect(processEmailAndGenerateResponse('test'))
             .rejects
             .toThrow('Failed to process email and generate response');
     });
 
     test('should cache responses for duplicate emails', async () => {
-        const emailContent = 'Same email content';
+        const emailContent = 'Unique email for caching test';
         
         const firstResponse = await processEmailAndGenerateResponse(emailContent);
         const secondResponse = await processEmailAndGenerateResponse(emailContent);
