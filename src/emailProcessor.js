@@ -7,6 +7,9 @@ const {promisify} = require('util');//to convert callback-based functions to pro
 const {generateResponse} = require('./responseGenerator');//import the response generator module
 const {createEvent} = require('./calendarManager');//import the calendar manager function for scheduling events
 
+//In-memory cache to store prossed email responses
+const emailResponseCache = {}; //cache object to store responses
+
 //Function to send an email
 async function fetchEmails(emailConfig){
     return new Promise((resolve, reject) => {
@@ -99,6 +102,11 @@ async function sendEmail(emailConfig, mailOptions){
  * @returns {Promise<string>} - A promise that resolves to the generated response.
  */
 const processEmailAndGenerateResponse = async (emailContent) => {
+    //Check if the response for this email content is already cached
+    if(emailResponseCache[emailContent]){
+        console.log('Returning cached response'); //log cache hit
+        return emailResponseCache[emailContent];
+    }
     try{
         const response = await generateResponse(emailContent); //generate a response with the email content
         // Check for scheduling requests in the email content
@@ -116,6 +124,7 @@ const processEmailAndGenerateResponse = async (emailContent) => {
             };
             await createEvent(eventData); //Schedule the event in the calendar
         }
+        emailResponseCache[emailContent] = response; //Cache generated response
         return response; //return the generated response
     }catch (error){
         console.error('Error processing email:', error); // Log any errors during email processing
