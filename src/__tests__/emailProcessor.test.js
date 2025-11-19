@@ -1,12 +1,8 @@
 
+
 // src/__tests__/emailProcessor.test.js
 
-const {processEmailAndGenerateResponse} = require('../emailProcessor');
-const {generateResponse} = require('../responseGenerator');
-const {createEvent} = require('../calendarManager');
-
-
-// Mock @xenova/transformers FIRST with inline implementation
+// Mock @xenova/transformers with inline implementation
 jest.mock('@xenova/transformers', () => ({
     pipeline: jest.fn(() => 
         jest.fn().mockResolvedValue([{
@@ -15,7 +11,7 @@ jest.mock('@xenova/transformers', () => ({
     )
 }));
 
-// Mock the dependencies
+// Mock other dependencies with inline implementations
 jest.mock('../responseGenerator', () => ({
     generateResponse: jest.fn()
 }));
@@ -24,6 +20,7 @@ jest.mock('../calendarManager', () => ({
     createEvent: jest.fn()
 }));
 
+// Require modules AFTER mocks are defined
 const {processEmailAndGenerateResponse} = require('../emailProcessor');
 const {generateResponse} = require('../responseGenerator');
 const {createEvent} = require('../calendarManager');
@@ -39,10 +36,6 @@ describe('Email processing', () => {
             id: 'event-123',
             summary: 'Scheduled Event'
         });
-        
-        // Clear the email cache manually by requiring and accessing it
-        const emailProcessor = require('../emailProcessor');
-        // Clear cache if accessible (it's not exported, so we just re-mock)
     });
 
     test('should generate a response from email content', async () => {
