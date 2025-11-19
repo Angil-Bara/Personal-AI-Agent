@@ -6,6 +6,12 @@ The architecture of Jarvis consists of several microservices that handle differe
 
 This modular design allows for easier maintenance and scalability as the application grows.
 
+## Setup Instructions
+For detailed setup instructions, please refer to the [setup instructions](docs/setup-instructions.md).
+
+## API References
+For detailed information about the API endpoints, please refer to the [API references](docs/api-references.md).
+
 ## Email Processing
 
 ### Fetching Emails
@@ -23,3 +29,4 @@ Notifications are for due bills, or upcoming subscription renewals are sent via 
 ### Setting Up CI/CD
 1. **Workflow File**: The CI/CD pipeline is defined in the `.github/workflows/ci.yml` file. This file specifies the steps to check out th code, set up the Node.js environment, install dependencies, run tests, and deploy the application.
 2. **Monitoring the pipeline**: After puching changes to the `main` branch, you can monitor the pipeline's status by navigating to the 'Actions' tab in your Github repository. Here, you can see the progress of each job and view logs for debugging if necessary.
+
